@@ -690,7 +690,7 @@ begin
             Stack := Stack + StringOfChar(ansichar(#32), 16 - (Length(Stack) mod 16)) ;
           end;
           {$ENDIF}
-          OleCheck(RealCall_Other(Address, @Stack[Length(Stack)-3], Length(Stack) div 4, 4, nil));
+          {$IFNDEF KYLIX}OleCheck({$ENDIF}RealCall_Other(Address, @Stack[Length(Stack)-3], Length(Stack) div 4, 4, nil){$IFNDEF KYLIX}){$ENDIF};
           Result := True;
         end;
 

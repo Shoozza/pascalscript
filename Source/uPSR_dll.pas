@@ -18,7 +18,11 @@ uses
   {$IFDEF UNIX}
   Unix, baseunix, dynlibs, termio, sockets;
   {$ELSE}
+  {$IFDEF KYLIX}
+  Sysutils;
+  {$ELSE}
   Windows;
+  {$ENDIF}
   {$ENDIF}
 
 {
@@ -108,6 +112,9 @@ begin
       {$IFDEF UNIX}
 	  dllhandle := LoadLibrary(PChar(s2));
       {$ELSE}
+      {$IFDEF KYLIX}
+      dllhandle := LoadLibrary(PChar(s2));
+      {$ELSE}
       {$IFDEF UNICODE}
       if Copy(s2, 1, 6) = '<utf8>' then
         Filename := UTF8ToUnicodeString(Copy(s2, 7, Maxint))
@@ -120,6 +127,7 @@ begin
         dllhandle := LoadLibraryEx(PChar(Filename), 0, LOAD_WITH_ALTERED_SEARCH_PATH)
       else
         dllhandle := LoadLibrary(PChar(Filename));
+      {$ENDIF}
       {$ENDIF}
       if dllhandle = 0 then
       begin
